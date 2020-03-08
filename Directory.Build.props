@@ -8,8 +8,8 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Write the tag to version.props file</Description>
     <Copyright>Copyright (c) 2020 dotnet-campus</Copyright>
-    <PackageProjectUrl>https://github.com/dotnet-campus/dotnetCampus.NugetMergeFixTool</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/dotnet-campus/dotnetCampus.NugetMergeFixTool.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/dotnet-campus/dotnetCampus.TagToVersion</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotnet-campus/dotnetCampus.TagToVersion</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet;nuget;msbuild</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

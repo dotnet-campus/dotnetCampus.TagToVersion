@@ -13,23 +13,30 @@ namespace dotnetCampus.TagToVersion
             Console.WriteLine($"Current directory {Environment.CurrentDirectory}");
             Console.WriteLine($"Args {Environment.CommandLine}");
 
-            Parser.Default.ParseArguments<Program>(args)
-                .WithParsed(option =>
-                {
-                    Console.WriteLine($"Read tag version. Tag name is {option.Tag}");
-                    var version = ReadTagVersion(option.Tag);
-                    Console.WriteLine($"Tag version is {version}");
+            try
+            {
+                Parser.Default.ParseArguments<Program>(args)
+                    .WithParsed(option =>
+                    {
+                        Console.WriteLine($"Read tag version. Tag name is {option.Tag}");
+                        var version = ReadTagVersion(option.Tag);
+                        Console.WriteLine($"Tag version is {version}");
 
-                    Console.WriteLine($"Find the version.props file. ");
-                    var versionFile = FindVersionFile(option.VersionFile);
+                        Console.WriteLine($"Find the version.props file. ");
+                        var versionFile = FindVersionFile(option.VersionFile);
 
-                    WriteVersionToFile(version, versionFile);
-                })
-                .WithNotParsed(errors =>
-                {
+                        WriteVersionToFile(version, versionFile);
+                    })
+                    .WithNotParsed(errors =>
+                    {
 
-                });
-
+                    });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Environment.Exit(-1);
+            }
         }
 
         private static void WriteVersionToFile(SemanticVersion version, FileInfo versionFile)

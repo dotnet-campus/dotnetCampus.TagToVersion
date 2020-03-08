@@ -21,7 +21,7 @@ jobs:
       run: |
         dotnet new tool-manifest
         dotnet install dotnetCampus.TagToVersion
-        dotnet TagToVersion -t ${{ steps.tag.outputs.result }}
+        dotnet tool run dotnet-TagToVersion -t ${{ steps.tag.outputs.result }}
 
     - name: Build with dotnet
       run: dotnet build --configuration Release

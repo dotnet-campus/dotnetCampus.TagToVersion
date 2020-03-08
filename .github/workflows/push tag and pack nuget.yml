@@ -20,7 +20,7 @@ jobs:
     - name: Install dotnet tool
       run: |
         dotnet new tool-manifest
-        dotnet install dotnetCampus.TagToVersion
+        dotnet tool install dotnetCampus.TagToVersion
         dotnet tool run dotnet-TagToVersion -t ${{ steps.tag.outputs.result }}
 
     - name: Build with dotnet

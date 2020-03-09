@@ -93,8 +93,8 @@ namespace dotnetCampus.TagToVersion
             }
 
 
-
-            if (SemanticVersion.TryParse(tag, out var tagVersion))
+            // 使用 NuGetVersion 而不是 SemanticVersion 是因为不支持 rc 版本号
+            if (NuGetVersion.TryParse(tag, out NuGetVersion tagVersion))
             {
                 return tagVersion;
             }

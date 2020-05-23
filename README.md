@@ -11,7 +11,7 @@ This tool can be used in CI to help us push tag and build the special version of
 ## Install 
 
 ```csharp
-dotnet install -g dotnetCampus.TagToVersion
+dotnet tool install -g dotnetCampus.TagToVersion
 ```
 
 ## Usage

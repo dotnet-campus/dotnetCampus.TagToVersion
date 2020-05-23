@@ -3,7 +3,7 @@ name: push tag and pack nuget
 on:
   push:
     tags:
-      - v*
+    - '*'
 
 jobs:
   build:
@@ -13,31 +13,24 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Github
-      run: echo "$GITHUB_REF"
-
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-
     - name: Install dotnet tool
-      run: |
-        dotnet new tool-manifest
-        dotnet tool install dotnetCampus.TagToVersion
-        dotnet tool run dotnet-TagToVersion -t ${{ steps.tag.outputs.result }}
+      run: dotnet tool install -g dotnetCampus.TagToVersion
+
+    - name: Set tag to version  
+      run: dotnet TagToVersion -t ${{ github.ref }}
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
 
     - name: Install Nuget
-      run: |
-        $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-        $targetNugetExe = "nuget.exe"
-        Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe
+      uses: nuget/setup-nuget@v1
+      with:        
+        nuget-version: '5.x'
+
     - name: Add private GitHub registry to NuGet
       run: |
-        .\nuget sources add -name github -Source https://nuget.pkg.github.com/ORGANIZATION_NAME/index.json -Username ORGANIZATION_NAME -Password ${{ secrets.GITHUB_TOKEN }}
+        nuget sources add -name github -Source https://nuget.pkg.github.com/ORGANIZATION_NAME/index.json -Username ORGANIZATION_NAME -Password ${{ secrets.GITHUB_TOKEN }}
     - name: Push generated package to GitHub registry
       run: |
-        .\nuget push .\bin\release\*.nupkg -Source github -SkipDuplicate
-        .\nuget push .\bin\release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -ApiKey ${{ secrets.NugetKey }} -NoSymbols 
+        nuget push .\bin\release\*.nupkg -Source github -SkipDuplicate
+        nuget push .\bin\release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -ApiKey ${{ secrets.NugetKey }} -NoSymbols 

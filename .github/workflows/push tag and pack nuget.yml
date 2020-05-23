@@ -3,7 +3,7 @@ name: push tag and pack nuget
 on:
   push:
     tags:
-      - *
+    - '*'
 
 jobs:
   build:

@@ -82,6 +82,13 @@ namespace dotnetCampus.TagToVersion
 
         private static SemanticVersion ReadTagVersion(string tag)
         {
+            const string githubRef = "refs/tags/";
+            if (tag.StartsWith(githubRef))
+            {
+                // github
+                tag = tag.Substring(githubRef.Length);
+            }
+
             if (tag.StartsWith("v", StringComparison.OrdinalIgnoreCase))
             {
                 tag = tag.Substring(1);

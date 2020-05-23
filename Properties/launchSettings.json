@@ -2,7 +2,7 @@
   "profiles": {
     "dotnetCampus.TagToVersion": {
       "commandName": "Project",
-      "commandLineArgs": "-t 1.0.2-alpha01",
+      "commandLineArgs": "-t 12.4.04-rc",
       "workingDirectory": ".\\"
     }
   }

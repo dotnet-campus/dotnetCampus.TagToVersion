@@ -59,7 +59,17 @@ namespace dotnetCampus.TagToVersion
             if (string.IsNullOrEmpty(versionFile))
             {
                 Console.WriteLine($"Auto finding version file");
-                versionFile = Path.GetFullPath(@"build\Version.props");
+                var buildFolder = Path.GetFullPath("build");
+                if (!Directory.Exists(buildFolder))
+                {
+                    buildFolder = Path.GetFullPath("Build");
+                    if (!Directory.Exists(buildFolder))
+                    {
+                        throw new ArgumentException($"Can not find build folder {buildFolder}");
+                    }
+                }
+
+                versionFile = Path.Combine(buildFolder, "Version.props");
 
                 if (!File.Exists(versionFile))
                 {

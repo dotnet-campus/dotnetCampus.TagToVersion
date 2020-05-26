@@ -22,7 +22,11 @@ The tool can automatically find the Version.props file and write the tag name to
 dotnet TagToVersion -t 1.0.2
 ```
 
+And We can specialize the version file path.
 
+```csharp
+dontet TagToVersion -t 1.0.2 -f build/Version.props
+```
 
 ## Principle
 

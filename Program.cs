@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using CommandLine;
 using NuGet.Versioning;
@@ -9,33 +10,58 @@ namespace dotnetCampus.TagToVersion
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("dotnetCampus.TagToVersion");
-            Console.WriteLine($"Current directory {Environment.CurrentDirectory}");
-            Console.WriteLine($"Args {Environment.CommandLine}");
-
             try
             {
                 Parser.Default.ParseArguments<Program>(args)
                     .WithParsed(option =>
                     {
-                        Console.WriteLine($"Read tag version. Tag name is {option.Tag}");
-                        var version = ReadTagVersion(option.Tag);
-                        Console.WriteLine($"Tag version is {version}");
-
-                        Console.WriteLine($"Find the version.props file. ");
-                        var versionFile = FindVersionFile(option.VersionFile);
-
-                        WriteVersionToFile(version, versionFile);
+                        option.ParseTagVersion();
                     })
                     .WithNotParsed(errors =>
                     {
-
+                        Console.WriteLine("dotnetCampus.TagToVersion");
+                        Console.WriteLine($"Current directory {Environment.CurrentDirectory}");
+                        Console.WriteLine($"Args {Environment.CommandLine}");
                     });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 Environment.Exit(-1);
+            }
+        }
+
+        private void ParseTagVersion()
+        {
+            Log("dotnetCampus.TagToVersion");
+            Log($"Current directory {Environment.CurrentDirectory}");
+
+            Log($"Read tag version. Tag name is {Tag}");
+            var version = ReadTagVersion(Tag);
+            Log($"Tag version is {version}");
+
+            if (ToConsole)
+            {
+                Console.WriteLine(version);
+            }
+            else
+            {
+                Log($"Find the version.props file. ");
+                var versionFile = FindVersionFile(VersionFile);
+
+                WriteVersionToFile(version, versionFile);
+            }
+        }
+
+        private void Log(string message)
+        {
+            if (ToConsole)
+            {
+                Debug.WriteLine(message);
+            }
+            else
+            {
+                Console.WriteLine(message);
             }
         }
 
@@ -120,6 +146,9 @@ namespace dotnetCampus.TagToVersion
                 throw new ArgumentException("Can not parse to version");
             }
         }
+
+        [Option('c', "toconsole", Required = false, HelpText = "Output the tag version to console")]
+        public bool ToConsole { set; get; }
 
         [Option('t', "tag", Required = true, HelpText = "The Tag Name")]
         public string Tag { set; get; }

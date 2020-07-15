@@ -90,3 +90,31 @@ The thrid step:
 ```
 
 For more detailed code, please find in this repo.
+
+## Gitlab
+
+Add the publish stage to `.gitlab-ci.yml` file
+
+```yaml
+stages:
+  - build
+  - publish
+```
+
+Add the stage to `.gitlab-ci.yml` file
+
+```yml
+publish:
+  stage: publish
+  script:
+    - "chcp 65001"
+    - "dotnet new tool-manifest"
+    - "dotnet tool install dotnetCampus.TagToVersion"
+    - "dotnet tool run dotnet-TagToVersion -t $CI_COMMIT_TAG"
+
+    - "dotnet pack --configuration Release"
+    - 'nuget push bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -ApiKey $NuGetKey -NoSymbols'
+
+  only:
+    - tags
+```
